@@ -133,15 +133,36 @@ public class PopupAds : MonoBehaviour
 		Debug.Log("ActivateBoosterCompleteShipTest");
 	}
 
-	void x2SpeedTest() { AdsManager.Instance.ActivateBoosterSpeedTest(); }
+	void x2SpeedTest()
+	{
+		if(GameDataManager.Instance.playerData.intDiamond>=100)
+		{
+			GameDataManager.Instance.playerData.SubDiamond(100);
 
-	void x2IncomeBooster() { AdsManager.Instance.ActivateBoosterIncome(); }
+			AdsManager.Instance.ActivateBoosterSpeedTest();
+		}
+	}
+
+	void x2IncomeBooster()
+	{
+		if(GameDataManager.Instance.playerData.intDiamond>=100)
+		{
+			GameDataManager.Instance.playerData.SubDiamond(100);
+			AdsManager.Instance.ActivateBoosterIncome();
+		}
+	}
+
 
 	public void OnClickWatchInvestor()
 	{
-		GameUIManager.Instance.popupAds.SetActive(false);
-		AdmodController.instance.ShowWitchCallback(WatchInvestorSucess,GameUIManager.Instance.FailToLoadAds);
-		SendEventFirebase.ClickOnAdsEvent("ads_reward_received_money","Main Screen");
+		if(GameDataManager.Instance.playerData.intDiamond>=100)
+		{
+			GameDataManager.Instance.playerData.SubDiamond(100);
+
+			GameUIManager.Instance.popupAds.SetActive(false);
+			AdmodController.instance.ShowWitchCallback(WatchInvestorSucess,GameUIManager.Instance.FailToLoadAds);
+			SendEventFirebase.ClickOnAdsEvent("ads_reward_received_money","Main Screen");
+		}
 	}
 
 	public void WatchInvestorSucess() { GameUIManager.Instance.AddMoney(GetMaxIncome()*5); }
